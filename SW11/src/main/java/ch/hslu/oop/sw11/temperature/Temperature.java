@@ -64,7 +64,7 @@ public class Temperature implements Comparable<Temperature> {
     public int compareTo(Temperature o) {
         return Double.compare(this.kelvin, o.kelvin);
     }
-
+    
     @Override
     public String toString() {
         return String.format("%.2fK", this.kelvin);
