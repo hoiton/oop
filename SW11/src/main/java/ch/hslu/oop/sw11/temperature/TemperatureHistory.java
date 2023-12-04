@@ -1,10 +1,17 @@
 package ch.hslu.oop.sw11.temperature;
 
+import ch.hslu.oop.sw11.Main;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class TemperatureHistory implements ITemperatureHistory {
+    private static final Logger LOG =
+            LoggerFactory.getLogger(Main.class);
+
     private final Collection<Temperature> temperatures = new ArrayList<>();
     private final Collection<TemperaturMaxChangedEventListener> maxChangedEventListeners = new ArrayList<>();
     private final Collection<TemperaturMinChangedEventListener> minChangedEventListeners = new ArrayList<>();
@@ -64,15 +71,15 @@ public class TemperatureHistory implements ITemperatureHistory {
 
     @Override
     public void printToFile(String path) {
-        try (var file = new FileOutputStream(path)) {
-            try (var output = new DataOutputStream(file)){
+        var file = new File(path);
+        LOG.info("Writing to file: {}", file.getAbsolutePath());
+        try (var fileOutput = new FileOutputStream(path)) {
+            try (var output = new DataOutputStream(fileOutput)){
                 output.writeInt(this.getCount());
                 for (var temp : this.temperatures) {
                     output.writeDouble(temp.getKelvin());
                 }
             }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

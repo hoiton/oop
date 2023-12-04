@@ -8,6 +8,7 @@ public class TemperatureInput {
 
     private static final Logger LOG =
             LoggerFactory.getLogger(TemperatureInput.class);
+
     public static ITemperatureHistory start() {
         var temperatureHistory = new TemperatureHistory();
         var minListener = new TemperatureInput.MinListener();
@@ -22,7 +23,7 @@ public class TemperatureInput {
             input = scanner.next();
             try {
                var value = Double.parseDouble(input);
-               var temperature = Temperature.fromCelsius(value);
+               var temperature = Temperature.fromCelsius(value, null);
                temperatureHistory.addTemperature(temperature);
                 LOG.info(temperature.toString());
             }
@@ -39,8 +40,6 @@ public class TemperatureInput {
         LOG.info("Minimaltemperatur: {}C", temperatureHistory.getMinTemperature());
 
         return temperatureHistory;
-
-        //LOG.info("Programm beendet.");
     }
 
     public static class MinListener implements TemperaturMinChangedEventListener {
